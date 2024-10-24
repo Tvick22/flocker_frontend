@@ -1,6 +1,16 @@
 <table>
     <tr>
-        <td><img src="{{site.baseurl}}/images/logo.png" height="60" title="Home" alt=""></td>
+        <td>
+            <img
+                src="{{site.baseurl}}/images/logo.png"
+                height="60"
+                title="Home"
+                alt=""
+            />
+        </td>
+        <td>
+            <a href="{{site.baseurl}}/revvit">REVVIT<br />(cars & mods)</a>
+        </td>
         <td><a href="{{site.baseurl}}/academics/math">Integrated</a></td>
         <td><a href="{{site.baseurl}}/academics/english">APEL</a></td>
         <td><a href="{{site.baseurl}}/electives/band">Orchestra</a></td>
@@ -11,15 +21,19 @@
 </table>
 
 <script type="module">
-    import { pythonURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
+    import {
+        pythonURI,
+        fetchOptions,
+    } from "{{site.baseurl}}/assets/js/api/config.js";
 
-    document.addEventListener('DOMContentLoaded', function() {
-    getCredentials() // Call the function to get credentials
-        .then(data => {
-            const loginArea = document.getElementById('loginArea');
-            if (data) { // Update the login area based on the data
-                // User is authenticated, replace "Login" with User's name
-                loginArea.innerHTML = `
+    document.addEventListener("DOMContentLoaded", function () {
+        getCredentials() // Call the function to get credentials
+            .then((data) => {
+                const loginArea = document.getElementById("loginArea");
+                if (data) {
+                    // Update the login area based on the data
+                    // User is authenticated, replace "Login" with User's name
+                    loginArea.innerHTML = `
                     <div class="dropdown">
                         <button class="dropbtn">${data.name}</button>
                         <div class="dropdown-content">
@@ -29,36 +43,40 @@
                         </div>
                     </div>
                 `;
-            } else {
-                // User is not authenticated, then "Login" link is shown
-                loginArea.innerHTML = '<a href="{{site.baseurl}}/login">Profile</a>';
-            }
-        })
-        .catch(err => { // General error handler
-            console.error("Error fetching credentials: ", err);
-            // Handle any errors that occurred during getCredentials
-        });
+                } else {
+                    // User is not authenticated, then "Login" link is shown
+                    loginArea.innerHTML =
+                        '<a href="{{site.baseurl}}/login">Profile</a>';
+                }
+            })
+            .catch((err) => {
+                // General error handler
+                console.error("Error fetching credentials: ", err);
+                // Handle any errors that occurred during getCredentials
+            });
     });
 
     function getCredentials() {
-        const URL = pythonURI + '/api/id';
+        const URL = pythonURI + "/api/id";
         return fetch(URL, fetchOptions)
-            .then(response => { // API response handler 
+            .then((response) => {
+                // API response handler
                 if (response.status !== 200) {
                     console.error("HTTP status code: " + response.status);
                     return null; // prepares to stop the chain by returning null.
                 }
                 return response.json(); // plans to continue the chain with the data.
             })
-            .then(data => { // Data handler from the previous promise  
+            .then((data) => {
+                // Data handler from the previous promise
                 if (data === null) return null; // stops the chain, returns null.
                 console.log(data); // logs data with should contain uid, name, etc.
-                return data; // returns data to caller 
+                return data; // returns data to caller
             })
-            .catch(err => { // General error handler
+            .catch((err) => {
+                // General error handler
                 console.error("Fetch error: ", err);
                 return null;
             });
     }
-
 </script>
